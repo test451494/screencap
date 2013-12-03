@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <jpeglib.h>
+#include "include/jpeg/jpeglib.h"
 #include <pthread.h>
 #include <linux/fb.h>
 #include <fcntl.h>
@@ -32,6 +32,8 @@ if(	fb_init() == 0){
 	
 		if ( getcwd(work_dir, sizeof(work_dir)) != NULL)
 		{
+printf("work dir is %s",work_dir);
+
 			char* tmp = "screen";
 			strncpy(work_dir,tmp,sizeof(tmp));	
 			screen_savePic();	
@@ -175,9 +177,11 @@ int rawData2Jpg(char *data, const char *jpg_file, int width, int height, int fb_
         return -1;
     }
     //Convert BMP to JPG
+	printf("test1\n");
     cinfo.err = jpeg_std_error(&jerr);
     //* Now we can initialize the JPEG compression object.
     jpeg_create_compress(&cinfo);
+	printf("test11\n");
 
     if ((outfile = fopen(jpg_file, "wb")) == NULL)
     {
@@ -186,6 +190,7 @@ int rawData2Jpg(char *data, const char *jpg_file, int width, int height, int fb_
         return -1;
     }
     jpeg_stdio_dest(&cinfo, outfile);
+	printf("test2\n");
     cinfo.image_width = width;             //* image width and height, in pixels
     cinfo.image_height = height;
     cinfo.input_components = depth;    //* # of color components per pixel
